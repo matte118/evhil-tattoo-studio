@@ -1,0 +1,123 @@
+---
+interface Props {
+  text: string;
+  tone?: 'ink' | 'violet';
+  size?: 'hero' | 'section';
+  class?: string;
+}
+
+const { text, tone = 'ink', size = 'hero', class: className } = Astro.props;
+const letters = Array.from(text);
+---
+
+<span
+  class:list={['graffiti-word', `graffiti-word--${tone}`, `graffiti-word--${size}`, className]}
+  aria-label={text}
+  data-graffiti-reveal
+>
+  <span class="graffiti-word__paint" aria-hidden="true"></span>
+  <span class="graffiti-word__letters" aria-hidden="true">
+    {letters.map((letter, index) => (
+      <span class="graffiti-word__letter" style={`--letter-index: ${index}`}>{letter}</span>
+    ))}
+  </span>
+  <span class="graffiti-word__slash" aria-hidden="true"></span>
+</span>
+
+<style>
+  .graffiti-word {
+    --graffiti-ink: var(--color-ink-bright);
+    position: relative;
+    display: inline-grid;
+    width: max-content;
+    max-width: 100%;
+    place-items: center;
+    isolation: isolate;
+    color: var(--graffiti-ink);
+    line-height: 0.72;
+    rotate: -4deg;
+  }
+
+  .graffiti-word--violet {
+    --graffiti-ink: var(--color-accent-bright);
+  }
+
+  .graffiti-word__letters {
+    z-index: 2;
+    display: flex;
+    align-items: baseline;
+    filter: drop-shadow(0.055em 0.065em 0 var(--color-accent));
+  }
+
+  .graffiti-word__letter {
+    display: inline-block;
+    margin-inline: 0;
+    font-family: var(--font-graffiti-primary);
+    font-size: clamp(5.4rem, 14vw, 13rem);
+    font-weight: 400;
+    letter-spacing: 0;
+    paint-order: stroke fill;
+    transform: translateY(calc((var(--letter-index) % 2) * 0.045em)) rotate(calc((var(--letter-index) - 2) * 0.8deg));
+    -webkit-text-stroke: 0.008em var(--graffiti-ink);
+  }
+
+  .graffiti-word--section .graffiti-word__letter {
+    font-size: clamp(3.2rem, 8vw, 7.5rem);
+  }
+
+  .graffiti-word__paint {
+    position: absolute;
+    z-index: 0;
+    inset: 20% -4% 4%;
+    background: var(--color-canvas);
+    border: 0.12em solid var(--graffiti-ink);
+    clip-path: polygon(1% 20%, 96% 0, 100% 68%, 89% 82%, 5% 100%, 0 54%);
+    rotate: 2deg;
+  }
+
+  .graffiti-word__slash {
+    position: absolute;
+    z-index: 3;
+    right: -2%;
+    bottom: -0.08em;
+    left: -3%;
+    height: 0.075em;
+    background: var(--color-accent-bright);
+    clip-path: polygon(0 38%, 100% 0, 92% 100%, 4% 72%);
+    rotate: -2deg;
+  }
+
+  .graffiti-word::before,
+  .graffiti-word::after {
+    position: absolute;
+    z-index: 4;
+    width: 0.08em;
+    height: 0.32em;
+    background: var(--graffiti-ink);
+    content: '';
+    transform-origin: top;
+  }
+
+  .graffiti-word::before {
+    bottom: -0.2em;
+    left: 17%;
+    rotate: 7deg;
+  }
+
+  .graffiti-word::after {
+    right: 11%;
+    bottom: -0.12em;
+    height: 0.2em;
+    rotate: -9deg;
+  }
+
+  @media (max-width: 47.99rem) {
+    .graffiti-word__letter {
+      font-size: clamp(6.5rem, 36vw, 9rem);
+    }
+
+    .graffiti-word--section .graffiti-word__letter {
+      font-size: clamp(3.25rem, 19vw, 5.5rem);
+    }
+  }
+</style>

@@ -1,0 +1,54 @@
+---
+interface Props {
+  text: string;
+  tone?: 'ink' | 'violet';
+  scale?: 'small' | 'large';
+  class?: string;
+}
+
+const { text, tone = 'ink', scale = 'small', class: className } = Astro.props;
+---
+
+<span class:list={['graffiti-label', `graffiti-label--${tone}`, `graffiti-label--${scale}`, className]}>
+  {text}
+</span>
+
+<style>
+  .graffiti-label {
+    position: relative;
+    display: inline-block;
+    color: var(--color-ink);
+    font-family: var(--font-graffiti-secondary);
+    font-size: clamp(1.15rem, 2vw, 1.9rem);
+    font-weight: 400;
+    letter-spacing: -0.035em;
+    line-height: 0.92;
+    rotate: -4deg;
+  }
+
+  .graffiti-label::after {
+    position: absolute;
+    right: -0.1em;
+    bottom: -0.28em;
+    left: -0.08em;
+    height: 0.13em;
+    background: currentColor;
+    clip-path: polygon(0 30%, 100% 0, 92% 100%, 4% 70%);
+    content: '';
+    opacity: 0.75;
+  }
+
+  .graffiti-label--violet {
+    color: var(--color-accent-bright);
+  }
+
+  .graffiti-label--large {
+    font-family: var(--font-graffiti-secondary);
+    font-size: clamp(2.1rem, 5.2vw, 5rem);
+    font-weight: 400;
+    letter-spacing: -0.075em;
+    line-height: 0.76;
+    text-shadow: 0.045em 0.055em 0 var(--color-canvas);
+    text-transform: uppercase;
+  }
+</style>

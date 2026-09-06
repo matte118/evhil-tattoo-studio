@@ -1,17 +1,49 @@
 ---
+import ArtistsPreview from '../components/ArtistsPreview.astro';
+import ContactSection from '../components/ContactSection.astro';
+import EventsPreview from '../components/EventsPreview.astro';
+import Header from '../components/Header.astro';
+import HomeHero from '../components/HomeHero.astro';
+import QuoteCTA from '../components/QuoteCTA.astro';
+import ReviewsPreview from '../components/ReviewsPreview.astro';
+import SelectedWorks from '../components/SelectedWorks.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import StudioManifesto from '../components/StudioManifesto.astro';
+import { business } from '../data/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
 
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: business.name,
+  telephone: business.phoneDisplay,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: business.street,
+    addressLocality: 'Venegono Inferiore',
+    addressRegion: 'VA',
+    addressCountry: 'IT',
+  },
+};
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="EVHIL Tattoo Studio · Venegono Inferiore"
+  description="EVHIL Tattoo Studio a Venegono Inferiore. Tattoo su misura, cultura street e confronto diretto sul progetto."
+  {structuredData}
+>
+  <Header overlay />
+
+  <main id="main-content">
+    <HomeHero />
+    <StudioManifesto />
+    <SelectedWorks />
+    <ArtistsPreview />
+    <EventsPreview />
+    <ReviewsPreview />
+    <QuoteCTA />
+    <ContactSection />
+  </main>
+
+  <SiteFooter />
+</BaseLayout>

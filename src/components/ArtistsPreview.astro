@@ -1,0 +1,210 @@
+---
+import portraitImage from '../../references/photography/06-black-white-tattoo-editorial.jpg';
+import workImage from '../../references/photography/02-street-lifestyle-night.jpg';
+import { homepageArtists } from '../data/site';
+import GraffitiWord from './GraffitiWord.astro';
+import MediaFrame from './MediaFrame.astro';
+import Section from './Section.astro';
+---
+
+<Section id="artisti" width="wide" surface="soft" class="artists">
+  <header class="artists__heading" data-reveal>
+    <div>
+      <h2>ARTISTI</h2>
+      <GraffitiWord text="CREW" tone="violet" size="section" />
+    </div>
+    <p>
+      La struttura è pronta per raccontare identità, specialità, ritratto e lavoro
+      selezionato. I profili reali saranno pubblicati solo dopo la conferma dello studio.
+    </p>
+  </header>
+
+  <div class="artists__list" data-stagger>
+    {homepageArtists.map((artist, index) => (
+      <article class="artist" data-artist-placeholder data-stagger-item>
+        <div class="artist__index" aria-hidden="true">0{index + 1}</div>
+
+        <div class="artist__portrait">
+          <MediaFrame
+            src={index === 0 ? portraitImage.src : workImage.src}
+            alt={`Immagine temporanea di riferimento per ${artist.slot}`}
+            caption="Ritratto da inserire"
+            ratio={index === 0 ? '4 / 5' : '3 / 4'}
+            treatment="mono"
+          />
+        </div>
+
+        <div class="artist__identity">
+          <p>{artist.status}</p>
+          <h3>{artist.slot}</h3>
+          <span>{artist.specialty}</span>
+          <span class="artist__profile" aria-disabled="true">Profilo in preparazione</span>
+        </div>
+
+        <div class="artist__work">
+          <p>Opera selezionata</p>
+          <span>Contenuto reale da collegare</span>
+        </div>
+      </article>
+    ))}
+  </div>
+</Section>
+
+<style>
+  :global(.artists) {
+    overflow: clip;
+    padding-block: var(--space-xl);
+  }
+
+  .artists__heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(18rem, 0.7fr);
+    gap: var(--space-xl);
+    align-items: end;
+    margin-bottom: var(--space-xl);
+  }
+
+  .artists__heading > div {
+    position: relative;
+    min-width: 0;
+  }
+
+  .artists__heading h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--section-heading-size);
+    font-weight: 900;
+    letter-spacing: -0.055em;
+    line-height: 0.72;
+  }
+
+  .artists__heading :global(.graffiti-word) {
+    position: absolute;
+    right: 1%;
+    bottom: -0.45em;
+  }
+
+  .artists__heading > p {
+    max-width: 42ch;
+    margin: 0;
+    color: var(--color-ink-muted);
+    font-size: var(--text-lead);
+  }
+
+  .artists__list {
+    border-top: var(--section-rule);
+  }
+
+  .artist {
+    display: grid;
+    grid-template-columns: 3.5rem minmax(14rem, 0.7fr) minmax(16rem, 1fr) minmax(12rem, 0.6fr);
+    gap: var(--space-lg);
+    align-items: end;
+    padding-block: var(--space-lg);
+    border-bottom: var(--section-rule);
+  }
+
+  .artist:nth-child(even) .artist__portrait {
+    order: 3;
+  }
+
+  .artist__index {
+    align-self: start;
+    color: var(--color-accent-bright);
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 900;
+  }
+
+  .artist__portrait {
+    max-width: 20rem;
+  }
+
+  .artist__identity p,
+  .artist__work p {
+    margin: 0 0 var(--space-xs);
+    color: var(--color-accent-bright);
+    font-size: var(--text-label);
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+
+  .artist__identity h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 6.5vw, 6.5rem);
+    font-weight: 900;
+    letter-spacing: -0.045em;
+    line-height: 0.78;
+    text-transform: uppercase;
+  }
+
+  .artist__identity > span,
+  .artist__work > span {
+    display: block;
+    margin-top: var(--space-sm);
+    color: var(--color-ink-muted);
+  }
+
+  .artist__profile {
+    width: fit-content;
+    padding-bottom: 0.2rem;
+    border-bottom: 1px solid var(--color-border-strong);
+    font-size: var(--text-label);
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 63.99rem) {
+    .artist {
+      grid-template-columns: 2.5rem minmax(12rem, 0.8fr) minmax(0, 1fr);
+    }
+
+    .artist__work {
+      display: none;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .artists__heading {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+
+    .artists__heading > div {
+      padding-bottom: 3.5rem;
+    }
+
+    .artists__heading :global(.graffiti-word) {
+      right: 0;
+      bottom: 0.15rem;
+    }
+
+    .artist {
+      grid-template-columns: 2rem minmax(0, 1fr);
+      gap: var(--space-md);
+      align-items: start;
+    }
+
+    .artist__portrait {
+      grid-column: 2;
+      width: 82%;
+    }
+
+    .artist:nth-child(even) .artist__portrait {
+      order: initial;
+      width: 72%;
+      margin-left: auto;
+    }
+
+    .artist__identity {
+      grid-column: 1 / -1;
+    }
+
+    .artist__identity h3 {
+      font-size: clamp(3.5rem, 18vw, 5.2rem);
+    }
+  }
+</style>

@@ -1,0 +1,56 @@
+@font-face {
+  font-family: "EVHIL Graffiti";
+  src: url("../../assets/fonts/graffiti-primary/DonGraffiti.otf") format("opentype");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "EVHIL Handstyle";
+  src: url("../../assets/fonts/graffiti-secondary/SedgwickAve-Regular.ttf") format("truetype");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Barlow Condensed";
+  src: url("../../assets/fonts/display/BarlowCondensed-Regular.ttf") format("truetype");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Barlow Condensed";
+  src: url("../../assets/fonts/display/BarlowCondensed-SemiBold.ttf") format("truetype");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "Barlow Condensed";
+  src: url("../../assets/fonts/display/BarlowCondensed-Bold.ttf") format("truetype");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Barlow Condensed";
+  src: url("../../assets/fonts/display/BarlowCondensed-Black.ttf") format("truetype");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: "Instrument Sans";
+  src: url("../../assets/fonts/body/InstrumentSans-VariableFont_wdth,wght.ttf") format("truetype-variations");
+  font-display: swap;
+  font-stretch: 75% 100%;
+  font-style: normal;
+  font-weight: 400 700;
+}

@@ -1,0 +1,509 @@
+---
+import navPreview from '../../references/photography/05-tattoo-working-process.jpg';
+import { business } from '../data/site';
+import BrandMark from './BrandMark.astro';
+import CTA from './CTA.astro';
+
+interface Props {
+  overlay?: boolean;
+}
+
+const { overlay = false } = Astro.props;
+
+const navItems = [
+  { label: 'Studio', href: '#studio' },
+  { label: 'Lavori', href: '#lavori' },
+  { label: 'Artisti', href: '#artisti' },
+  { label: 'Contatti', href: '#contatti' },
+];
+---
+
+<header class:list={['site-header', { 'site-header--overlay': overlay }]} data-site-header>
+  <div class="site-header__bar">
+    <a class="site-header__brand" href="/" aria-label="EVHIL Tattoo Studio, home">
+      <BrandMark compact />
+    </a>
+
+    <nav class="desktop-nav" aria-label="Navigazione principale">
+      <ul>
+        {navItems.map((item) => (
+          <li>
+            <a href={item.href}>{item.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <CTA
+        class="site-header__cta"
+        href={business.whatsappUrl}
+        label="WhatsApp"
+        ariaLabel="Scrivici su WhatsApp (si apre in una nuova scheda)"
+        compact
+        external
+      />
+
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-label="Apri menu"
+        aria-expanded="false"
+        aria-controls="mobile-navigation"
+        data-menu-toggle
+      >
+        <span class="menu-toggle__line"></span>
+        <span class="menu-toggle__line"></span>
+      </button>
+    </div>
+  </div>
+
+  <dialog
+    class="mobile-menu"
+    id="mobile-navigation"
+    aria-label="Navigazione principale"
+    data-mobile-menu
+  >
+    <div class="mobile-menu__topline">
+      <BrandMark compact />
+      <button class="mobile-menu__close" type="button" aria-label="Chiudi menu" data-menu-close>
+        <svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true">
+          <path d="M5 5l22 22M27 5L5 27" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="mobile-menu__layout">
+      <nav aria-label="Pagine principali">
+        <ol>
+          {navItems.map((item, index) => (
+            <li>
+              <a href={item.href}>
+                <span>{item.label}</span>
+                <small>0{index + 1}</small>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+
+      <figure class="mobile-menu__visual">
+        <img
+          src={navPreview.src}
+          width={navPreview.width}
+          height={navPreview.height}
+          alt="Immagine temporanea di riferimento: tatuatore al lavoro"
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption>Immagine di riferimento / da sostituire</figcaption>
+      </figure>
+    </div>
+
+    <div class="mobile-menu__footer">
+      <p>Venegono Inferiore · VA</p>
+      <CTA
+        href={business.whatsappUrl}
+        label="Scrivici su WhatsApp"
+        ariaLabel="Scrivici su WhatsApp dal menu (si apre in una nuova scheda)"
+        external
+      />
+    </div>
+  </dialog>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-site-header]');
+  const dialog = header?.querySelector<HTMLDialogElement>('[data-mobile-menu]');
+  const toggle = header?.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const closeButton = header?.querySelector<HTMLButtonElement>('[data-menu-close]');
+  const menuLinks = dialog?.querySelectorAll<HTMLAnchorElement>('a');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let closeTimer: number | undefined;
+
+  const syncHeaderSurface = () => {
+    header?.classList.toggle('is-scrolled', window.scrollY > 64);
+  };
+
+  const syncClosedState = () => {
+    window.clearTimeout(closeTimer);
+    dialog?.classList.remove('is-closing');
+    document.body.classList.remove('menu-open');
+    toggle?.setAttribute('aria-expanded', 'false');
+    toggle?.setAttribute('aria-label', 'Apri menu');
+  };
+
+  const finishClose = () => {
+    if (dialog?.open) {
+      dialog.close();
+    }
+
+    syncClosedState();
+    toggle?.focus();
+  };
+
+  const closeMenu = () => {
+    if (!dialog?.open) {
+      return;
+    }
+
+    if (reduceMotion.matches) {
+      finishClose();
+      return;
+    }
+
+    dialog.classList.add('is-closing');
+    closeTimer = window.setTimeout(finishClose, 220);
+  };
+
+  const openMenu = () => {
+    if (!dialog || dialog.open) {
+      return;
+    }
+
+    dialog.showModal();
+    document.body.classList.add('menu-open');
+    toggle?.setAttribute('aria-expanded', 'true');
+    toggle?.setAttribute('aria-label', 'Chiudi menu');
+    closeButton?.focus();
+  };
+
+  toggle?.addEventListener('click', openMenu);
+  closeButton?.addEventListener('click', closeMenu);
+  menuLinks?.forEach((link) => link.addEventListener('click', closeMenu));
+  dialog?.addEventListener('cancel', (event) => {
+    event.preventDefault();
+    closeMenu();
+  });
+  dialog?.addEventListener('close', syncClosedState);
+  window.addEventListener('scroll', syncHeaderSurface, { passive: true });
+  syncHeaderSurface();
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    z-index: var(--z-header);
+    top: 0;
+    width: 100%;
+    color: var(--color-ink-bright);
+    background: rgb(5 5 5 / 96%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .site-header--overlay {
+    position: fixed;
+    background: linear-gradient(to bottom, rgb(5 5 5 / 94%), rgb(5 5 5 / 0%));
+    border-bottom-color: transparent;
+    transition:
+      background-color var(--motion-base) var(--ease-out),
+      border-color var(--motion-base) var(--ease-out);
+  }
+
+  .site-header--overlay.is-scrolled {
+    background: rgb(5 5 5 / 94%);
+    border-bottom-color: var(--color-border);
+    backdrop-filter: blur(0.55rem);
+  }
+
+  .site-header__bar {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: var(--space-md);
+    align-items: center;
+    min-height: clamp(4.75rem, 7vw, 6.25rem);
+    padding-inline: var(--gutter);
+  }
+
+  .site-header__brand {
+    display: inline-flex;
+    width: fit-content;
+    text-decoration: none;
+  }
+
+  .desktop-nav {
+    justify-self: center;
+  }
+
+  .desktop-nav ul {
+    display: flex;
+    gap: clamp(1.25rem, 2.6vw, 3rem);
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .desktop-nav a {
+    position: relative;
+    display: inline-block;
+    padding-block: 0.6rem;
+    font-size: var(--text-label);
+    font-weight: 680;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .desktop-nav a::after {
+    position: absolute;
+    right: 0;
+    bottom: 0.28rem;
+    left: 0;
+    height: 0.12rem;
+    background: var(--color-accent);
+    content: '';
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--motion-base) var(--ease-out-expo);
+  }
+
+  .site-header__actions {
+    display: flex;
+    gap: var(--space-xs);
+    align-items: center;
+  }
+
+  .menu-toggle {
+    display: none;
+    width: 3.25rem;
+    height: 3.25rem;
+    padding: 0.85rem 0.7rem;
+    border: 1px solid var(--color-border-strong);
+    border-radius: 0;
+    color: var(--color-ink);
+    background: var(--color-canvas);
+    cursor: pointer;
+  }
+
+  .menu-toggle__line {
+    display: block;
+    width: 100%;
+    height: 0.1rem;
+    margin-block: 0.28rem;
+    background: currentColor;
+  }
+
+  .mobile-menu {
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    padding: 0;
+    margin: 0;
+    overflow: auto;
+    color: var(--color-ink);
+    background: var(--color-canvas-soft);
+    border: 0;
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity var(--motion-base) var(--ease-out-expo),
+      transform var(--motion-base) var(--ease-out-expo),
+      display var(--motion-base) allow-discrete,
+      overlay var(--motion-base) allow-discrete;
+  }
+
+  .mobile-menu::backdrop {
+    background: rgb(5 5 5 / 78%);
+  }
+
+  .mobile-menu.is-closing {
+    opacity: 0;
+    transform: translateY(-1rem);
+  }
+
+  @starting-style {
+    .mobile-menu[open] {
+      opacity: 0;
+      transform: translateY(-1.5rem);
+    }
+  }
+
+  .mobile-menu__topline,
+  .mobile-menu__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-sm) var(--gutter);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .mobile-menu__close {
+    display: grid;
+    place-items: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    padding: 0;
+    color: var(--color-ink);
+    background: transparent;
+    border: 1px solid var(--color-border-strong);
+    border-radius: 0;
+    cursor: pointer;
+  }
+
+  .mobile-menu__close svg {
+    width: 1.7rem;
+    height: 1.7rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.4;
+  }
+
+  .mobile-menu__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(16rem, 0.8fr);
+    min-height: calc(100dvh - 12rem);
+  }
+
+  .mobile-menu nav {
+    padding: var(--space-lg) var(--gutter);
+  }
+
+  .mobile-menu ol {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .mobile-menu li + li {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .mobile-menu nav a {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding-block: clamp(0.65rem, 1.3vw, 1rem);
+    font-family: var(--font-display);
+    font-size: clamp(2.7rem, 7vw, 6rem);
+    font-weight: 900;
+    letter-spacing: -0.035em;
+    line-height: 0.88;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .mobile-menu nav small {
+    padding-top: 0.25rem;
+    color: var(--color-accent-bright);
+    font-family: var(--font-body);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+  }
+
+  .mobile-menu__visual {
+    position: relative;
+    min-height: 24rem;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .mobile-menu__visual::after {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgb(5 5 5 / 86%), transparent 48%);
+    content: '';
+    pointer-events: none;
+  }
+
+  .mobile-menu__visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.1);
+  }
+
+  .mobile-menu__visual figcaption {
+    position: absolute;
+    z-index: 1;
+    right: var(--space-sm);
+    bottom: var(--space-sm);
+    left: var(--space-sm);
+    color: var(--color-ink-muted);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .mobile-menu__footer {
+    border-top: 1px solid var(--color-border);
+    border-bottom: 0;
+  }
+
+  .mobile-menu__footer p {
+    margin: 0;
+    color: var(--color-ink-muted);
+    font-size: var(--text-label);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .desktop-nav a:hover::after,
+    .mobile-menu nav a:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    .mobile-menu nav a:hover {
+      color: var(--color-accent-bright);
+    }
+
+  }
+
+  @media (max-width: 63.99rem) {
+    .desktop-nav {
+      display: none;
+    }
+
+    .site-header__bar {
+      grid-template-columns: minmax(0, 1fr) auto;
+      min-height: 4.75rem;
+    }
+
+    .menu-toggle {
+      display: block;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .site-header__bar {
+      gap: var(--space-xs);
+    }
+
+    .site-header__actions {
+      min-width: 0;
+      gap: 0.4rem;
+      justify-self: end;
+    }
+
+    .menu-toggle {
+      width: 2.85rem;
+      height: 2.85rem;
+      padding-inline: 0.62rem;
+    }
+
+    .mobile-menu__layout {
+      grid-template-columns: 1fr;
+    }
+
+    .mobile-menu nav {
+      padding-block: var(--space-md);
+    }
+
+    .mobile-menu nav a {
+      font-size: clamp(2.6rem, 13vw, 4.3rem);
+    }
+
+    .mobile-menu__visual {
+      display: none;
+    }
+
+    .mobile-menu__footer {
+      align-items: stretch;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+  }
+</style>

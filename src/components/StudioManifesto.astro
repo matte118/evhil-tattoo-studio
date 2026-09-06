@@ -1,0 +1,178 @@
+---
+import processImage from '../../references/photography/05-tattoo-working-process.jpg';
+import GraffitiLabel from './GraffitiLabel.astro';
+import Section from './Section.astro';
+---
+
+<Section id="studio" width="wide" surface="soft" class="studio-manifesto">
+  <div class="studio-grid">
+    <div class="studio-grid__statement" data-reveal>
+      <h2>Il progetto<br />parte da te.</h2>
+      <GraffitiLabel text="non da un catalogo" tone="violet" />
+    </div>
+
+    <div class="studio-grid__copy" data-reveal>
+      <p class="studio-grid__lead">
+        EVHIL è uno studio contemporaneo dove tattoo, ricerca visiva e cultura street
+        entrano nello stesso spazio.
+      </p>
+      <p>
+        Ogni lavoro nasce dall’ascolto: l’idea, le reference, il corpo e il modo in cui
+        il disegno dovrà viverci sopra. Il processo resta diretto, curato e condiviso.
+      </p>
+    </div>
+
+    <figure class="studio-grid__media" data-reveal>
+      <div data-parallax-frame>
+        <img
+          src={processImage.src}
+          width={processImage.width}
+          height={processImage.height}
+          alt="Immagine temporanea di riferimento: tatuatore concentrato durante il lavoro"
+          loading="lazy"
+          decoding="async"
+          data-parallax
+        />
+      </div>
+      <figcaption>Reference visiva temporanea · non è contenuto EVHIL</figcaption>
+    </figure>
+
+    <p class="studio-grid__mark" aria-hidden="true">CUSTOM</p>
+  </div>
+</Section>
+
+<style>
+  :global(.studio-manifesto) {
+    overflow: clip;
+  }
+
+  .studio-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--space-lg) var(--space-md);
+  }
+
+  .studio-grid__statement {
+    z-index: 2;
+    grid-column: 1 / span 7;
+  }
+
+  h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--section-heading-size);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 0.78;
+    text-transform: uppercase;
+  }
+
+  .studio-grid__statement :global(.graffiti-label) {
+    margin: var(--space-md) 0 0 clamp(1rem, 8vw, 8rem);
+  }
+
+  .studio-grid__copy {
+    z-index: 2;
+    grid-column: 9 / -1;
+    align-self: end;
+    padding-bottom: var(--space-lg);
+  }
+
+  .studio-grid__copy p {
+    max-width: 40ch;
+    margin: 0;
+    color: var(--color-ink-muted);
+  }
+
+  .studio-grid__copy .studio-grid__lead {
+    margin-bottom: var(--space-md);
+    color: var(--color-ink);
+    font-size: var(--text-lead);
+    line-height: 1.35;
+  }
+
+  .studio-grid__media {
+    z-index: 1;
+    grid-column: 3 / span 7;
+    margin: var(--space-lg) 0 0;
+  }
+
+  .studio-grid__media > div {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+
+  .studio-grid__media img {
+    width: 100%;
+    height: 110%;
+    object-fit: cover;
+    object-position: center 42%;
+    filter: grayscale(1) contrast(1.12);
+  }
+
+  figcaption {
+    padding-top: var(--space-xs);
+    color: var(--color-ink-muted);
+    font-size: 0.64rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+
+  .studio-grid__mark {
+    position: absolute;
+    z-index: 0;
+    right: -0.08em;
+    bottom: -0.22em;
+    margin: 0;
+    color: transparent;
+    font-family: var(--font-display);
+    font-size: clamp(9rem, 23vw, 24rem);
+    font-weight: 900;
+    letter-spacing: -0.07em;
+    line-height: 0.75;
+    -webkit-text-stroke: 1px rgb(146 91 255 / 24%);
+  }
+
+  @media (max-width: 63.99rem) {
+    .studio-grid__statement {
+      grid-column: 1 / span 8;
+    }
+
+    .studio-grid__copy {
+      grid-column: 8 / -1;
+    }
+
+    .studio-grid__media {
+      grid-column: 2 / span 9;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .studio-grid {
+      display: block;
+    }
+
+    h2 {
+      max-width: 100%;
+      font-size: clamp(3rem, 13.5vw, 4.25rem);
+    }
+
+    .studio-grid__copy {
+      padding: var(--space-xl) 0 var(--space-md) 16%;
+    }
+
+    .studio-grid__media {
+      width: calc(100% + var(--gutter));
+      margin-left: calc(-1 * var(--gutter));
+    }
+
+    .studio-grid__media > div {
+      aspect-ratio: 4 / 5;
+    }
+
+    .studio-grid__mark {
+      display: none;
+    }
+  }
+</style>

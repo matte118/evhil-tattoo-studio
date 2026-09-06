@@ -1,0 +1,175 @@
+---
+import { business, quoteSteps } from '../data/site';
+import CTA from './CTA.astro';
+import GraffitiLabel from './GraffitiLabel.astro';
+import Section from './Section.astro';
+---
+
+<Section id="preventivo" width="wide" surface="canvas" class="quote">
+  <div class="quote__topline" data-reveal>
+    <p>Hai un’idea, una reference o solo un punto di partenza?</p>
+    <GraffitiLabel text="parliamone davvero" tone="violet" scale="large" />
+  </div>
+
+  <div class="quote__statement" data-reveal>
+    <h2>LA TUA IDEA.<br />SULLA TUA PELLE.</h2>
+    <p>
+      Raccontaci cosa hai in mente. Il confronto serve a definire progetto, posizione e
+      prossimi passaggi senza trasformare il primo contatto in un modulo infinito.
+    </p>
+  </div>
+
+  <ol class="quote__flow" aria-label="Percorso dal primo contatto all'appuntamento" data-stagger>
+    {quoteSteps.map((step, index) => (
+      <li data-stagger-item>
+        <span>0{index + 1}</span>
+        <strong>{step}</strong>
+      </li>
+    ))}
+  </ol>
+
+  <div class="quote__action" data-reveal>
+    <CTA
+      href={business.whatsappUrl}
+      label="Scrivici su WhatsApp"
+      ariaLabel="Scrivici su WhatsApp per richiedere un preventivo (si apre in una nuova scheda)"
+      variant="editorial"
+      external
+    />
+  </div>
+</Section>
+
+<style>
+  .quote__topline {
+    display: flex;
+    gap: var(--space-lg);
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-bottom: var(--space-md);
+    border-bottom: var(--section-rule);
+  }
+
+  .quote__topline p {
+    max-width: 32ch;
+    margin: 0;
+    color: var(--color-ink-muted);
+    font-size: var(--text-label);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .quote__statement {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.65fr);
+    gap: var(--space-xl);
+    align-items: end;
+    padding-block: var(--space-xl);
+  }
+
+  .quote__statement h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(4.5rem, 10.5vw, 11rem);
+    font-weight: 900;
+    letter-spacing: -0.06em;
+    line-height: 0.69;
+  }
+
+  .quote__statement p {
+    max-width: 42ch;
+    margin: 0;
+    color: var(--color-ink-muted);
+    font-size: var(--text-lead);
+  }
+
+  .quote__flow {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    padding: 0;
+    margin: 0 0 var(--space-xl);
+    border-block: var(--section-rule);
+    list-style: none;
+  }
+
+  .quote__flow li {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    min-height: 8.5rem;
+    padding: var(--space-sm);
+  }
+
+  .quote__flow li + li {
+    border-left: var(--section-rule);
+  }
+
+  .quote__flow span {
+    color: var(--color-accent-bright);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  .quote__flow strong {
+    margin-top: auto;
+    font-size: var(--text-label);
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  .quote__action {
+    position: relative;
+  }
+
+  @media (max-width: 63.99rem) {
+    .quote__flow {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .quote__flow li:nth-child(4) {
+      border-left: 0;
+    }
+
+    .quote__flow li:nth-child(n + 4) {
+      border-top: var(--section-rule);
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .quote__topline {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .quote__statement {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+
+    .quote__statement h2 {
+      font-size: clamp(4rem, 20vw, 6rem);
+    }
+
+    .quote__flow {
+      grid-template-columns: 1fr;
+    }
+
+    .quote__flow li {
+      min-height: auto;
+      flex-direction: row;
+      align-items: baseline;
+      padding-block: var(--space-md);
+    }
+
+    .quote__flow li + li,
+    .quote__flow li:nth-child(n + 4) {
+      border-top: var(--section-rule);
+      border-left: 0;
+    }
+
+    .quote__flow strong {
+      margin-top: 0;
+    }
+  }
+</style>

@@ -1,0 +1,146 @@
+---
+import { homepageReviews } from '../data/site';
+import Section from './Section.astro';
+---
+
+<Section id="recensioni" width="wide" surface="soft" class="reviews">
+  <header class="reviews__heading" data-reveal>
+    <h2>RECENSIONI</h2>
+    <p>
+      Qui troveranno spazio solo testimonianze autentiche, con fonte e attribuzione
+      verificate prima della pubblicazione.
+    </p>
+  </header>
+
+  <div class="reviews__grid" data-stagger>
+    {homepageReviews.map((review, index) => (
+      <article class="review" data-review-placeholder data-stagger-item>
+        <span class="review__index">0{index + 1}</span>
+        <div>
+          <h3>{review.label}</h3>
+          <p>Spazio editoriale per una recensione verificata.</p>
+        </div>
+        <small>{review.source}</small>
+      </article>
+    ))}
+  </div>
+</Section>
+
+<style>
+  :global(.reviews) {
+    padding-block: var(--space-xl);
+  }
+
+  .reviews__heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.65fr);
+    gap: var(--space-xl);
+    align-items: end;
+    margin-bottom: var(--space-xl);
+  }
+
+  .reviews__heading h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--section-heading-size);
+    font-weight: 900;
+    letter-spacing: -0.055em;
+    line-height: 0.72;
+  }
+
+  .reviews__heading p {
+    max-width: 42ch;
+    margin: 0;
+    color: var(--color-ink-muted);
+    font-size: var(--text-lead);
+  }
+
+  .reviews__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-top: var(--section-rule);
+  }
+
+  .review {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    gap: var(--space-lg);
+    min-height: 18rem;
+    padding: var(--space-xl) var(--space-lg) var(--space-lg) 0;
+    border-bottom: var(--section-rule);
+  }
+
+  .review + .review {
+    padding-left: var(--space-lg);
+    border-left: var(--section-rule);
+  }
+
+  .review__index {
+    color: var(--color-accent-bright);
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 900;
+  }
+
+  .review h3 {
+    max-width: 12ch;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.7rem, 4.7vw, 5rem);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 0.86;
+    text-transform: uppercase;
+  }
+
+  .review p {
+    max-width: 35ch;
+    margin: var(--space-lg) 0 0;
+    color: var(--color-ink-muted);
+  }
+
+  .review small {
+    grid-column: 2;
+    align-self: end;
+    color: var(--color-ink-muted);
+    font-size: var(--text-label);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 47.99rem) {
+    .reviews__heading,
+    .reviews__grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .reviews__heading {
+      gap: var(--space-lg);
+    }
+
+    .reviews__heading h2 {
+      max-width: 100%;
+      font-size: clamp(3.2rem, 13.5vw, 4.5rem);
+    }
+
+    .review {
+      grid-template-columns: minmax(0, 1fr);
+      min-height: 19rem;
+      padding: var(--space-lg) 0;
+    }
+
+    .review + .review {
+      padding-left: 0;
+      border-left: 0;
+    }
+
+    .review h3 {
+      max-width: 9ch;
+      font-size: clamp(2.5rem, 11.5vw, 3.5rem);
+    }
+
+    .review small {
+      grid-column: 1;
+    }
+  }
+</style>

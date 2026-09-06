@@ -1,0 +1,198 @@
+---
+import heroImage from '../../references/photography/01-tattoo-detail-finished.jpg';
+import processImage from '../../references/photography/05-tattoo-working-process.jpg';
+import editorialImage from '../../references/photography/06-black-white-tattoo-editorial.jpg';
+import sketchImage from '../../references/photography/04-sketch-creative-process.jpg';
+import CTA from './CTA.astro';
+import MediaFrame from './MediaFrame.astro';
+import Section from './Section.astro';
+
+const works = [
+  { src: heroImage.src, alt: 'Dettaglio ravvicinato di un tatuaggio', caption: 'Dettaglio / pelle e inchiostro', ratio: '4 / 5', treatment: 'natural' as const },
+  { src: editorialImage.src, alt: 'Composizione editoriale in bianco e nero con tatuaggio', caption: 'Corpo / composizione', ratio: '3 / 4', treatment: 'mono' as const },
+  { src: processImage.src, alt: 'Tatuatore concentrato durante il lavoro', caption: 'Processo / studio', ratio: '16 / 10', treatment: 'mono' as const },
+  { src: sketchImage.src, alt: 'Disegno preparatorio e processo creativo', caption: 'Disegno / ricerca', ratio: '4 / 3', treatment: 'natural' as const },
+];
+---
+
+<Section id="lavori" width="wide" surface="canvas" class="selected-works">
+  <div class="works-heading" data-reveal>
+    <h2>Lavori<br />selezionati</h2>
+    <div>
+      <p>
+        Un archivio editoriale pensato per lasciare spazio al lavoro. Le immagini qui sotto
+        sono reference temporanee e non documentano tattoo realizzati da EVHIL.
+      </p>
+      <span>Portfolio reale in preparazione</span>
+    </div>
+  </div>
+
+  <div class="works-grid" data-stagger>
+    {works.map((work, index) => (
+      <article class={`works-grid__item works-grid__item--${index + 1}`} data-stagger-item data-reference-work>
+        <MediaFrame
+          src={work.src}
+          alt={`Immagine temporanea di riferimento: ${work.alt}`}
+          caption={work.caption}
+          ratio={work.ratio}
+          treatment={work.treatment}
+          parallax
+        />
+      </article>
+    ))}
+    <p class="works-grid__word" aria-hidden="true">WORK</p>
+  </div>
+
+  <div class="works-footer" data-reveal>
+    <p>Il portfolio definitivo verrà popolato esclusivamente con lavori verificati.</p>
+    <CTA href="#artisti" label="Conosci gli artisti" variant="text" />
+  </div>
+</Section>
+
+<style>
+  :global(.selected-works) {
+    overflow: clip;
+  }
+
+  .works-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.65fr);
+    gap: var(--space-xl);
+    align-items: end;
+    margin-bottom: var(--space-xl);
+  }
+
+  h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--section-heading-size);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 0.76;
+    text-transform: uppercase;
+  }
+
+  .works-heading p {
+    max-width: 43ch;
+    margin: 0 0 var(--space-sm);
+    color: var(--color-ink-muted);
+    font-size: var(--text-lead);
+  }
+
+  .works-heading span,
+  .works-footer p {
+    color: var(--color-accent-bright);
+    font-size: var(--text-label);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .works-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--space-xl) var(--space-md);
+  }
+
+  .works-grid__item {
+    position: relative;
+    z-index: 1;
+  }
+
+  .works-grid__item--1 {
+    grid-column: 1 / span 6;
+  }
+
+  .works-grid__item--2 {
+    grid-column: 8 / span 4;
+    margin-top: clamp(8rem, 14vw, 15rem);
+  }
+
+  .works-grid__item--3 {
+    grid-column: 2 / span 7;
+  }
+
+  .works-grid__item--4 {
+    grid-column: 9 / -1;
+    align-self: end;
+  }
+
+  .works-grid__word {
+    position: absolute;
+    z-index: 0;
+    top: 25%;
+    right: -0.1em;
+    margin: 0;
+    color: transparent;
+    font-family: var(--font-display);
+    font-size: clamp(10rem, 24vw, 24rem);
+    font-weight: 900;
+    letter-spacing: -0.08em;
+    line-height: 0.75;
+    writing-mode: vertical-rl;
+    -webkit-text-stroke: 1px rgb(146 91 255 / 28%);
+  }
+
+  .works-footer {
+    display: flex;
+    gap: var(--space-lg);
+    align-items: center;
+    justify-content: space-between;
+    padding-top: var(--space-lg);
+    margin-top: var(--space-xl);
+    border-top: var(--section-rule);
+  }
+
+  .works-footer p {
+    margin: 0;
+    color: var(--color-ink-muted);
+  }
+
+  @media (max-width: 63.99rem) {
+    .works-grid__item--1 { grid-column: 1 / span 7; }
+    .works-grid__item--2 { grid-column: 8 / -1; }
+    .works-grid__item--3 { grid-column: 1 / span 8; }
+    .works-grid__item--4 { grid-column: 9 / -1; }
+  }
+
+  @media (max-width: 47.99rem) {
+    .works-heading {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-md);
+    }
+
+    h2 {
+      max-width: 100%;
+      font-size: clamp(3.2rem, 14vw, 4.6rem);
+    }
+
+    .works-heading > div {
+      min-width: 0;
+      padding-left: 13%;
+    }
+
+    .works-grid {
+      display: block;
+    }
+
+    .works-grid__item + .works-grid__item {
+      margin-top: var(--space-xl);
+    }
+
+    .works-grid__item--1 { width: 88%; }
+    .works-grid__item--2 { width: 72%; margin-left: auto; }
+    .works-grid__item--3 { width: calc(100% + var(--gutter)); margin-left: calc(-1 * var(--gutter)); }
+    .works-grid__item--4 { width: 78%; margin-left: 8%; }
+
+    .works-grid__word {
+      top: 25%;
+      font-size: 12rem;
+    }
+
+    .works-footer {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+</style>

@@ -1,0 +1,58 @@
+---
+interface Props {
+  id?: string;
+  width?: 'default' | 'wide' | 'narrow' | 'full';
+  surface?: 'canvas' | 'soft' | 'surface';
+  class?: string;
+}
+
+const {
+  id,
+  width = 'default',
+  surface = 'canvas',
+  class: className,
+} = Astro.props;
+---
+
+<section
+  {id}
+  class:list={[
+    'section',
+    `section--${surface}`,
+    { 'section--contained': width !== 'full' },
+    className,
+  ]}
+>
+  <div
+    class:list={[
+      { container: width !== 'full' },
+      { 'container--wide': width === 'wide' },
+      { 'container--narrow': width === 'narrow' },
+    ]}
+  >
+    <slot />
+  </div>
+</section>
+
+<style>
+  .section {
+    position: relative;
+  }
+
+  .section--contained {
+    padding-block: var(--space-2xl);
+  }
+
+  .section--canvas {
+    background: var(--color-canvas);
+  }
+
+  .section--soft {
+    background: var(--color-canvas-soft);
+  }
+
+  .section--surface {
+    background: var(--color-surface);
+  }
+</style>
+
